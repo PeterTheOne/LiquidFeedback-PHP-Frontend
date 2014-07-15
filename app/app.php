@@ -13,6 +13,20 @@ $twig = new Twig_Environment($loader, array(
 $twig->addGlobal('baseUrl', $config->server->baseUrl);
 $twig->addGlobal('title', 'LiquidFeedback PHP Frontend');
 
+function loggedIn($config) {
+    return isset($_SESSION['member']) && isset($_SESSION['HTTP_USER_AGENT']) &&
+    $_SESSION['HTTP_USER_AGENT'] === sha1($config->session->salt . $_SERVER['HTTP_USER_AGENT']);
+}
+
+$authenticate = function(\SLIM\SLIM $app, $config) {
+    return function() use ($app, $config) {
+        if (!loggedIn($config)) {
+            $_SESSION['urlRedirect'] = $app->request()->getPathInfo();
+            $app->redirect($config->server->baseUrl . '/login');
+        }
+    };
+};
+
 // todo: only display errors if config says so.
 $app->error(function(\Exception $exception) use ($app, $twig) {
     echo $twig->render('error.html', array('exception' => $exception));
@@ -27,11 +41,40 @@ $app->get('/', function() use($app, $twig) {
     echo $twig->render('index.html', array('title' => 'LiquidFeedback PHP Frontend'));
 });
 
-$app->get('/login', function() use($app, $twig) {
-    echo $twig->render('login.html', array('title' => 'LiquidFeedback PHP Frontend'));
+$app->get('/login', function() use($app, $config, $twig) {
+    if (loggedIn($config)) {
+        $app->redirect($config->server->baseUrl);
+    }
+    echo $twig->render('login.html', array(
+        'title' => 'LiquidFeedback PHP Frontend',
+    ));
 });
 
-$app->get('/members', function() use($app, $lqfb, $twig) {
+$app->post('/login', function() use($app, $config, $lqfb, $twig) {
+    $member = $lqfb->login($app->request->params('login'), $app->request->params('password'));
+    if (isset($member)) {
+        $_SESSION['member'] = $member;
+        $_SESSION['HTTP_USER_AGENT'] = sha1($config->session->salt . $_SERVER['HTTP_USER_AGENT']);
+        if (isset($_SESSION['urlRedirect'])) {
+            $this->redirec($_SESSION['urlRedirect']);
+        }
+        $app->redirect($config->server->baseUrl);
+    }
+    $app->redirect($config->server->baseUrl . '/login');
+});
+
+$app->get('/logout', function() use($app, $config) {
+    unset($_SESSION['member']);
+    unset($_SESSION['HTTP_USER_AGENT']);
+    $app->redirect($config->server->baseUrl . '/login');
+});
+
+$app->get('/members', function() use($app, $config, $lqfb, $twig) {
+    // todo: move to function/hook/something
+    if (loggedIn($config)) {
+        $lqfb->setCurrentAccessLevel(\LiquidFeedback\LiquidFeedback::ACCESS_LEVEL_MEMBER);
+        $lqfb->setCurrentMemberId($_SESSION['member']->id);
+    }
     $members = $lqfb->getMember(
         null,
         $app->request->params('active'),

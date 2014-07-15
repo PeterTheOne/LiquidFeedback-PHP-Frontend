@@ -18,3 +18,11 @@ $config->server->password = '';
  * Example: 'http://localhost/rootFolder/public'
  */
 $config->server->baseUrl = '';
+
+$config->session = new stdClass();
+$config->session->salt = '';
+
+
+$config->checkDelegationsIntervalHard = '1 day';
+$config->checkDelegationsIntervalSoft = '3 seconds';
+
