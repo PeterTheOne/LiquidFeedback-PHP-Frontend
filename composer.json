@@ -1,0 +1,24 @@
+{
+    "name": "petertheone/liquidfeedback-frontend",
+    "description": "LiquidFeedback Frontend",
+    "minimum-stability": "dev",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Peter Grassberger aka. PeterTheOne",
+            "email": "petertheone@gmail.com",
+            "homepage": "http://petergrassberger.com/"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@github.com:PeterTheOne/LiquidFeedback-PHP.git"
+        }
+    ],
+    "require": {
+        "slim/slim": "2.4.3",
+        "petertheone/liquidfeedback": "*",
+        "twig/twig": "1.*"
+    }
+}

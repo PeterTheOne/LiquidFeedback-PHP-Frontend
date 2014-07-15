@@ -1,0 +1,7 @@
+{{ include('layout/header.html') }}
+        <h1><a href="{{ baseUrl }}">{{ title }}</a></h1>
+{{ include('partials/menu.html') }}
+        <h2>Error</h2>
+        <p>{{ exception.getMessage() }}</p>
+
+{{ include('layout/footer.html') }}

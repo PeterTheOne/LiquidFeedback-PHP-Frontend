@@ -1,0 +1,12 @@
+{{ include('layout/header.html') }}
+        <h1><a href="{{ baseUrl }}">{{ title }}</a></h1>
+{{ include('partials/menu.html') }}
+
+        <h2>Members</h2>
+        <ul>
+        {% for member in members %}
+            <li>{{ member.name }}</li>
+        {% endfor %}
+        </ul>
+
+{{ include('layout/footer.html') }}
