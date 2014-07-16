@@ -4,7 +4,7 @@ $lqfb = new \LiquidFeedback\LiquidFeedback($config->server->host,
     $config->server->port, $config->server->dbname, $config->server->user,
     $config->server->password);
 // !!! don't change the access level if you don't know what you are doing. !!!
-$lqfb->setCurrentAccessLevel(\LiquidFeedback\LiquidFeedback::ACCESS_LEVEL_ANONYMOUS);
+$lqfb->setCurrentAccessLevel(\LiquidFeedback\AccessLevel::ANONYMOUS);
 
 $loader = new Twig_Loader_Filesystem('../app/templates');
 $twig = new Twig_Environment($loader, array(
@@ -15,17 +15,29 @@ $twig->addGlobal('title', 'LiquidFeedback PHP Frontend');
 
 function loggedIn($config) {
     return isset($_SESSION['member']) && isset($_SESSION['HTTP_USER_AGENT']) &&
-    $_SESSION['HTTP_USER_AGENT'] === sha1($config->session->salt . $_SERVER['HTTP_USER_AGENT']);
+        $_SESSION['HTTP_USER_AGENT'] === sha1($config->session->salt . $_SERVER['HTTP_USER_AGENT']);
 }
 
-$authenticate = function(\SLIM\SLIM $app, $config) {
-    return function() use ($app, $config) {
+$checkLogin = function() {
+    return function() {
+        global $config;
+        $app = \Slim\Slim::getInstance();
         if (!loggedIn($config)) {
             $_SESSION['urlRedirect'] = $app->request()->getPathInfo();
             $app->redirect($config->server->baseUrl . '/login');
         }
     };
 };
+
+//setAccessLevelFromSession
+$app->hook('slim.before.dispatch', function() use ($config, $lqfb) {
+    if (loggedIn($config)) {
+        $lqfb->setCurrentAccessLevel(
+            \LiquidFeedback\AccessLevel::MEMBER,
+            $_SESSION['member']->id
+        );
+    }
+});
 
 // todo: only display errors if config says so.
 $app->error(function(\Exception $exception) use ($app, $twig) {
@@ -56,25 +68,21 @@ $app->post('/login', function() use($app, $config, $lqfb, $twig) {
         $_SESSION['member'] = $member;
         $_SESSION['HTTP_USER_AGENT'] = sha1($config->session->salt . $_SERVER['HTTP_USER_AGENT']);
         if (isset($_SESSION['urlRedirect'])) {
-            $this->redirec($_SESSION['urlRedirect']);
+            $app->redirect($config->server->baseUrl . $_SESSION['urlRedirect']);
         }
         $app->redirect($config->server->baseUrl);
     }
     $app->redirect($config->server->baseUrl . '/login');
 });
 
-$app->get('/logout', function() use($app, $config) {
+$app->get('/logout', function() use($app, $config, $lqfb) {
     unset($_SESSION['member']);
     unset($_SESSION['HTTP_USER_AGENT']);
+    $lqfb->setCurrentAccessLevel(\LiquidFeedback\AccessLevel::ANONYMOUS);
     $app->redirect($config->server->baseUrl . '/login');
 });
 
-$app->get('/members', function() use($app, $config, $lqfb, $twig) {
-    // todo: move to function/hook/something
-    if (loggedIn($config)) {
-        $lqfb->setCurrentAccessLevel(\LiquidFeedback\LiquidFeedback::ACCESS_LEVEL_MEMBER);
-        $lqfb->setCurrentMemberId($_SESSION['member']->id);
-    }
+$app->get('/members', $checkLogin(), function() use($app, $config, $lqfb, $twig) {
     $members = $lqfb->getMember(
         null,
         $app->request->params('active'),
