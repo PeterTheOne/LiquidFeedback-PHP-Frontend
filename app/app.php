@@ -30,7 +30,7 @@ $checkLogin = function() {
 };
 
 //setAccessLevelFromSession
-$app->hook('slim.before.dispatch', function() use ($config, $lqfb, $twig) {
+$app->hook('slim.before.router', function() use ($config, $lqfb, $twig) {
     if (loggedIn($config)) {
         $lqfb->setCurrentAccessLevel(
             \LiquidFeedback\AccessLevel::MEMBER,
