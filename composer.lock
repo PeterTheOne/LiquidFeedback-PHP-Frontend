@@ -52,12 +52,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/PeterTheOne/LiquidFeedback-PHP.git",
-                "reference": "34173f3aeede9e5577a62a32357af250407587b6"
+                "reference": "8dd85ef252973febf0488e5c605004fb049a873b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PeterTheOne/LiquidFeedback-PHP/zipball/34173f3aeede9e5577a62a32357af250407587b6",
-                "reference": "34173f3aeede9e5577a62a32357af250407587b6",
+                "url": "https://api.github.com/repos/PeterTheOne/LiquidFeedback-PHP/zipball/8dd85ef252973febf0488e5c605004fb049a873b",
+                "reference": "8dd85ef252973febf0488e5c605004fb049a873b",
                 "shasum": ""
             },
             "require": {
@@ -88,7 +88,7 @@
                 "source": "https://github.com/PeterTheOne/LiquidFeedback-PHP/tree/master",
                 "issues": "https://github.com/PeterTheOne/LiquidFeedback-PHP/issues"
             },
-            "time": "2014-07-16 00:03:33"
+            "time": "2014-07-16 02:13:10"
         },
         {
             "name": "slim/slim",
