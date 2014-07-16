@@ -3,8 +3,7 @@
 $lqfb = new \LiquidFeedback\LiquidFeedback($config->server->host,
     $config->server->port, $config->server->dbname, $config->server->user,
     $config->server->password);
-// !!! don't change the access level if you don't know what you are doing. !!!
-$lqfb->setCurrentAccessLevel(\LiquidFeedback\AccessLevel::ANONYMOUS);
+$lqfb->setCurrentAccessLevel($config->defaultAccessLevel);
 
 $loader = new Twig_Loader_Filesystem('../app/templates');
 $twig = new Twig_Environment($loader, array(
@@ -79,7 +78,7 @@ $app->post('/login', function() use($app, $config, $lqfb, $twig) {
 $app->get('/logout', function() use($app, $config, $lqfb) {
     unset($_SESSION['member']);
     unset($_SESSION['HTTP_USER_AGENT']);
-    $lqfb->setCurrentAccessLevel(\LiquidFeedback\AccessLevel::ANONYMOUS);
+    $lqfb->setCurrentAccessLevel($config->defaultAccessLevel);
     $app->redirect($config->server->baseUrl . '/login');
 });
 
