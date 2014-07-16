@@ -1,5 +1,6 @@
-{{ include('layout/header.html') }}
+{% extends 'layout/base.html' %}
+{% block content %}
         <h2>Error</h2>
         <p>{{ exception.getMessage() }}</p>
 
-{{ include('layout/footer.html') }}
+{% endblock %}

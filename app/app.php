@@ -30,12 +30,13 @@ $checkLogin = function() {
 };
 
 //setAccessLevelFromSession
-$app->hook('slim.before.dispatch', function() use ($config, $lqfb) {
+$app->hook('slim.before.dispatch', function() use ($config, $lqfb, $twig) {
     if (loggedIn($config)) {
         $lqfb->setCurrentAccessLevel(
             \LiquidFeedback\AccessLevel::MEMBER,
             $_SESSION['member']->id
         );
+        $twig->addGlobal('member', $_SESSION['member']);
     }
 });
 
@@ -82,7 +83,7 @@ $app->get('/logout', function() use($app, $config, $lqfb) {
     $app->redirect($config->server->baseUrl . '/login');
 });
 
-$app->get('/members', $checkLogin(), function() use($app, $config, $lqfb, $twig) {
+$app->get('/member', $checkLogin(), function() use($app, $config, $lqfb, $twig) {
     $members = $lqfb->getMember(
         null,
         $app->request->params('active'),
