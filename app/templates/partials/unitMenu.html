@@ -1,0 +1,8 @@
+        <nav>
+            <h1>Units</h1>
+            <ul>
+                {% for unit in units %}
+                <li><a href="{{ baseUrl }}/unit/{{ unit.id }}">{{ unit.name }}</a></li>
+                {% endfor %}
+            </ul>
+        </nav>

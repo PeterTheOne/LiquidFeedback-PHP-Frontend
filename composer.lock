@@ -52,12 +52,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/PeterTheOne/LiquidFeedback-PHP.git",
-                "reference": "8dd85ef252973febf0488e5c605004fb049a873b"
+                "reference": "be66d31c0d3d9f90cd9be4cbd84783c8fae17f97"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PeterTheOne/LiquidFeedback-PHP/zipball/8dd85ef252973febf0488e5c605004fb049a873b",
-                "reference": "8dd85ef252973febf0488e5c605004fb049a873b",
+                "url": "https://api.github.com/repos/PeterTheOne/LiquidFeedback-PHP/zipball/be66d31c0d3d9f90cd9be4cbd84783c8fae17f97",
+                "reference": "be66d31c0d3d9f90cd9be4cbd84783c8fae17f97",
                 "shasum": ""
             },
             "require": {
@@ -88,7 +88,7 @@
                 "source": "https://github.com/PeterTheOne/LiquidFeedback-PHP/tree/master",
                 "issues": "https://github.com/PeterTheOne/LiquidFeedback-PHP/issues"
             },
-            "time": "2014-07-16 02:13:10"
+            "time": "2014-08-07 12:53:25"
         },
         {
             "name": "slim/slim",
@@ -142,12 +142,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fabpot/Twig.git",
-                "reference": "11ea5976e38413a7a65cd2e0e2b1da9d969af513"
+                "reference": "e2d2a250d963dd5bba4ad23fc01c7282fc042946"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fabpot/Twig/zipball/11ea5976e38413a7a65cd2e0e2b1da9d969af513",
-                "reference": "11ea5976e38413a7a65cd2e0e2b1da9d969af513",
+                "url": "https://api.github.com/repos/fabpot/Twig/zipball/e2d2a250d963dd5bba4ad23fc01c7282fc042946",
+                "reference": "e2d2a250d963dd5bba4ad23fc01c7282fc042946",
                 "shasum": ""
             },
             "require": {
@@ -176,7 +176,7 @@
                     "role": "Lead Developer"
                 },
                 {
-                    "name": "Armin Ronacher2",
+                    "name": "Armin Ronacher",
                     "email": "armin.ronacher@active-4.com",
                     "role": "Project Founder"
                 },
@@ -191,7 +191,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2014-07-07 12:54:10"
+            "time": "2014-08-06 06:46:32"
         }
     ],
     "packages-dev": [

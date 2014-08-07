@@ -37,6 +37,8 @@ $app->hook('slim.before.router', function() use ($config, $lqfb, $twig) {
         );
         $twig->addGlobal('member', $_SESSION['member']);
     }
+    $units = $lqfb->getUnit();
+    $twig->addGlobal('units', $units);
 });
 
 // todo: only display errors if config says so.
@@ -96,5 +98,31 @@ $app->get('/member', $checkLogin(), function() use($app, $config, $lqfb, $twig) 
         'members' => $members
     ));
 });
+
+$app->get('/unit/:id', function($id) use($app, $config, $lqfb, $twig) {
+    $unit = $lqfb->getUnit($id)[0];
+    $areas = $lqfb->getArea(null, null, null, $id);
+
+    echo $twig->render('unit.html', array(
+        'title' => 'LiquidFeedback PHP Frontend',
+        'unit' => $unit,
+        'areas' => $areas
+    ));
+});
+
+$app->get('/area/:id', function($id) use($app, $config, $lqfb, $twig) {
+    $area = $lqfb->getArea($id)[0];
+    // todo: fix parameter madness!
+    $issues = $lqfb->getIssue(null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, $id);
+
+    echo $twig->render('area.html', array(
+        'title' => 'LiquidFeedback PHP Frontend',
+        'area' => $area,
+        'issues' => $issues
+    ));
+});
+
+
 
 

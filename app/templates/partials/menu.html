@@ -1,10 +1,10 @@
         <nav>
             <ul>
                 <li><a href="{{ baseUrl }}">Home</a></li>
-                <li><a href="{{ baseUrl }}/member">Members</a></li>
                 {% if not member %}
                 <li><a href="{{ baseUrl }}/login">Login</a></li>
                 {% else %}
+                <li><a href="{{ baseUrl }}/member">Members</a></li>
                 <li>{{ member.login }} (<a href="{{ baseUrl }}/logout">Logout</a>)</li>
                 {% endif %}
             </ul>
